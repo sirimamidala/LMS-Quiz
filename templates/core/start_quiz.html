@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Start Quiz - LMS GPT{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 4rem auto; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--primary);">
+        <i class="fas fa-brain"></i>
+    </div>
+    <h1>Generate Your Quiz</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter any topic (e.g., "Quantum Physics", "React Hooks",
+        "World History") and we'll generate 30 challenging MCQs for you using AI.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group" style="text-align: left;">
+            <label>Topic Name</label>
+            <input type="text" name="topic" class="form-control" placeholder="Enter topic..." required
+                style="padding: 1.2rem;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">
+            Generate 30 Questions
+        </button>
+    </form>
+
+    <div style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-muted);">
+        <i class="fas fa-info-circle"></i> AI generation may take 5-10 seconds.
+    </div>
+</div>
+{% endblock %}

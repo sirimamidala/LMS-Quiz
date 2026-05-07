@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard - LMS GPT{% endblock %}
+
+{% block extra_css %}
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 1.5rem;
+margin-bottom: 2rem;
+}
+.stat-card {
+text-align: center;
+padding: 1.5rem;
+}
+.stat-value {
+font-size: 2.5rem;
+font-weight: 700;
+color: var(--primary);
+}
+.history-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 1rem;
+}
+.history-table th, .history-table td {
+padding: 1rem;
+text-align: left;
+border-bottom: 1px solid var(--glass-border);
+}
+.score-badge {
+padding: 0.25rem 0.75rem;
+border-radius: 999px;
+font-weight: 600;
+background: rgba(99, 102, 241, 0.1);
+color: var(--primary);
+}
+{% endblock %}
+
+{% block content %}
+<div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+    <div>
+        <h1>Welcome Back, {{ user.username }}</h1>
+        <p style="color: var(--text-muted)">Ready to test your knowledge today?</p>
+    </div>
+    <a href="{% url 'start_quiz' %}" class="btn btn-primary">New Quiz</a>
+</div>
+
+<div class="stats-grid">
+    <div class="card stat-card">
+        <p style="color: var(--text-muted)">Quizzes Taken</p>
+        <div class="stat-value">{{ attempts.count }}</div>
+    </div>
+    <div class="card stat-card">
+        <p style="color: var(--text-muted)">Avg Score</p>
+        <div class="stat-value">{% if attempts %}{{ avg_score|floatformat:1 }}%{% else %}0%{% endif %}</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Your History</h2>
+    {% if attempts %}
+    <table class="history-table">
+        <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Score</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+            <tr>
+                <td style="font-weight: 600;">{{ attempt.topic }}</td>
+                <td><span class="score-badge">{{ attempt.score }}/{{ attempt.total_questions }}</span></td>
+                <td style="color: var(--text-muted)">{{ attempt.created_at|date:"M d, Y" }}</td>
+                <td><a href="#" style="color: var(--primary); text-decoration: none;">Review</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="padding: 2rem; text-align: center; color: var(--text-muted)">No quizzes taken yet. Start your first quiz
+        now!</p>
+    {% endif %}
+</div>
+{% endblock %}
